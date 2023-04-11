@@ -1,5 +1,5 @@
 import { styled } from 'solid-styled-components';
-import { For } from 'solid-js';
+import { For, Show } from 'solid-js';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import localeData from 'dayjs/plugin/localeData';
@@ -11,13 +11,23 @@ dayjs.extend(localeData);
 dayjs.extend(weekday);
 dayjs.extend(customParseFormat);
 
-const StyledMonth = styled.article`
+interface IStyledMonth {
+  isCurrent: boolean;
+}
+
+const StyledMonth = styled.article<IStyledMonth>`
   margin: 12px 0;
   padding: 12px;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 24px;
+  border-radius: 7px;
+  position: relative;
+  h3 {
+    font-size: 40px;
+    color: ${({ isCurrent }) => (isCurrent ? '#800' : '#999')};
+  }
   .day-name {
     text-align: center;
     padding: 4px;
@@ -44,6 +54,7 @@ export function Month(props: IMonth) {
     'D-M-YYYY-H',
     'es'
   );
+  const currentMonth = dayjs().month();
 
   // array of numbers: days in month
   const totalDaysInMonth = firstDay.daysInMonth();
@@ -55,13 +66,19 @@ export function Month(props: IMonth) {
   daysArray.unshift(...zeros);
 
   return (
-    <StyledMonth>
+    <StyledMonth isCurrent={props.index === currentMonth}>
       <h3>{props.month}</h3>
       <StyledDays>
-        {/* <For each={dayjs.weekdays(true)}>
-          {(day) => <div class="day-name">{day}</div>}
-        </For> */}
-        <For each={daysArray}>{(day) => <Day day={day} />}</For>
+        <Show when={props.index === currentMonth}>
+          <For each={dayjs.weekdays(true)}>
+            {(day) => <div class="day-name">{day}</div>}
+          </For>
+        </Show>
+        <For each={daysArray}>
+          {(day) => (
+            <Day monthName={props.month} month={props.index} day={day} />
+          )}
+        </For>
       </StyledDays>
     </StyledMonth>
   );

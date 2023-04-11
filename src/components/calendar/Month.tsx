@@ -1,7 +1,7 @@
+import { currentYear } from '$src/config';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { styled } from 'solid-styled-components';
-import { currentYear } from './config';
 
 dayjs.extend(customParseFormat);
 

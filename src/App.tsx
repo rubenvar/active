@@ -1,6 +1,6 @@
+import { Calendar } from '$components/calendar/Calendar';
 import type { Component } from 'solid-js';
 import { styled } from 'solid-styled-components';
-import { Calendar } from './Calendar';
 
 const StyledMain = styled('main')`
   background-color: #282c34;

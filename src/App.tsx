@@ -2,7 +2,7 @@ import { Calendar } from '$components/calendar/Calendar';
 import type { Component } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
-const StyledMain = styled('main')`
+const StyledMain = styled.div`
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -28,7 +28,6 @@ const App: Component = () => {
         </h1>
       </header>
       <main>
-        <p>the app goes here</p>
         <Calendar />
       </main>
     </StyledMain>

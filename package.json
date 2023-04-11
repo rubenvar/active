@@ -8,7 +8,13 @@
     "build": "vite build",
     "serve": "vite preview"
   },
+  "dependencies": {
+    "dayjs": "^1.11.7",
+    "solid-js": "^1.6.10",
+    "solid-styled-components": "^0.28.5"
+  },
   "devDependencies": {
+    "@types/node": "^18.15.11",
     "@typescript-eslint/parser": "^5.58.0",
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
@@ -18,10 +24,5 @@
     "typescript": "^4.9.5",
     "vite": "^4.1.1",
     "vite-plugin-solid": "^2.5.0"
-  },
-  "dependencies": {
-    "dayjs": "^1.11.7",
-    "solid-js": "^1.6.10",
-    "solid-styled-components": "^0.28.5"
   }
 }

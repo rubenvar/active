@@ -16,8 +16,8 @@ export const StyledDayPopup = styled.div`
     margin-bottom: 40px;
   }
   .inner {
-    display: grid;
-    grid-template-rows: 1fr 1.5fr;
+    display: flex;
+    flex-direction: column;
     width: 75%;
     margin: 0 auto;
     gap: 40px;
@@ -51,13 +51,12 @@ export const StyledPopupInputs = styled.div`
   }
   form {
     display: flex;
+    align-items: center;
     gap: 18px;
     margin-bottom: 18px;
   }
   textarea {
     width: 100%;
     padding: 12px;
-    font-size: inherit;
-    font-family: inherit;
   }
 `;

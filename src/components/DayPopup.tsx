@@ -20,7 +20,7 @@ export function DayPopup(props: IDayPopup) {
   const [contextActivities] = useActivities();
   // create list of available activities to choose from
   const [selected, setSelected] = createStore(
-    contextActivities.map((act) => ({ ...act, selected: false }))
+    contextActivities.map((activity) => ({ activity, selected: false }))
   );
   const [notes, setNotes] = createSignal<string>('');
   const [showNewActivity, setShowNewActivity] = createSignal(false);
@@ -44,7 +44,7 @@ export function DayPopup(props: IDayPopup) {
   ) {
     // toggle only the clicked value and update the whole signal array of objects
     setSelected(
-      (act) => act.value === e.currentTarget.value,
+      (obj) => obj.activity === e.currentTarget.value,
       'selected',
       (sel) => !sel
     );
@@ -65,7 +65,7 @@ export function DayPopup(props: IDayPopup) {
               <For each={selected}>
                 {(obj) => (
                   <Show when={obj.selected}>
-                    <li>{obj.label}</li>
+                    <li>{obj.activity}</li>
                   </Show>
                 )}
               </For>
@@ -89,11 +89,11 @@ export function DayPopup(props: IDayPopup) {
                 <label>
                   <input
                     type="checkbox"
-                    value={obj.value}
+                    value={obj.activity}
                     checked={obj.selected}
                     onChange={handleInput}
                   />
-                  <span>{obj.label}</span>
+                  <span>{obj.activity}</span>
                 </label>
               )}
             </For>

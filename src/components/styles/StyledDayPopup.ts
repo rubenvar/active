@@ -51,6 +51,7 @@ export const StyledPopupInputs = styled.div`
   }
   form {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 18px;
     margin-bottom: 18px;

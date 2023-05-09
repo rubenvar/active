@@ -1,14 +1,14 @@
 import { createContext, useContext, ParentComponent } from 'solid-js';
-import { Actividad, activities as defaultActivities } from '$src/config';
+import { activities as defaultActivities } from '$src/config';
 import { createLocalStore } from './localStorage';
 
-type ActivityContextState = Actividad[];
+type ActivityContextState = string[];
 
 type ActivityContextValue = [
   state: ActivityContextState,
   actions: {
     // eslint-disable-next-line no-unused-vars
-    add: (activity: Actividad) => void;
+    add: (activity: string) => void;
   }
 ];
 
@@ -18,7 +18,7 @@ const ActivityContext = createContext<ActivityContextValue>([
 ]);
 
 export const ActivityProvider: ParentComponent<{
-  default?: Actividad[];
+  default?: string[];
 }> = (props) => {
   // use localStorage special store
   const [activities, setActivities] = createLocalStore(
@@ -28,8 +28,13 @@ export const ActivityProvider: ParentComponent<{
   );
 
   // function that adds activity if it doesn't already exist
-  const add = (activity?: Actividad) => {
-    if (activity && activities.every((obj) => obj.value !== activity.value)) {
+  const add = (activity?: string) => {
+    if (
+      activity &&
+      !activities
+        .map((st) => st.toLocaleLowerCase())
+        .includes(activity.toLocaleLowerCase())
+    ) {
       setActivities((curr) => [...curr, activity]);
     }
   };

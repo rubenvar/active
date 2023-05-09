@@ -1,4 +1,3 @@
-import { activities } from '$src/config';
 import { For, Setter, createSignal, onCleanup, onMount, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { CreateNewActivity } from './CreateNewActivity';
@@ -7,6 +6,7 @@ import {
   StyledPopupInputs,
   StyledPopupResults,
 } from './styles/StyledDayPopup';
+import { useActivities } from './stores/ActivityContext';
 
 interface IDayPopup {
   monthName: string;
@@ -16,21 +16,22 @@ interface IDayPopup {
 }
 
 export function DayPopup(props: IDayPopup) {
+  // get activities list from context
+  const [contextActivities] = useActivities();
+  // create list of available activities to choose from
   const [selected, setSelected] = createStore(
-    activities.map((act) => ({ ...act, selected: false }))
+    contextActivities.map((act) => ({ ...act, selected: false }))
   );
   const [notes, setNotes] = createSignal<string>('');
   const [showNewActivity, setShowNewActivity] = createSignal(false);
 
+  // close popup when Escape is pressed
   onMount(() => {
     window.addEventListener('keydown', handleKeydown);
   });
-
   onCleanup(() => {
     window.removeEventListener('keydown', handleKeydown);
   });
-
-  // close popup when Escape is pressed
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape') props.setIsOpen(false);
   }
@@ -104,7 +105,11 @@ export function DayPopup(props: IDayPopup) {
                 </button>
               }
             >
-              <CreateNewActivity />
+              <CreateNewActivity
+                close={() => {
+                  setShowNewActivity(false);
+                }}
+              />
             </Show>
           </form>
           <textarea

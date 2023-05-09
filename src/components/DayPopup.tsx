@@ -1,4 +1,5 @@
-import { Setter, onCleanup, onMount } from 'solid-js';
+import { activities } from '$src/config';
+import { For, Setter, createSignal, onCleanup, onMount, Show } from 'solid-js';
 import { styled } from 'solid-styled-components';
 
 const StyledDayPopup = styled.div`
@@ -13,11 +14,18 @@ const StyledDayPopup = styled.div`
   color: white;
   h3 {
     text-align: center;
+    font-size: 30px;
   }
-  button {
+  .close {
     position: absolute;
     top: 12px;
     right: 12px;
+    font-size: 40px;
+    line-height: 1;
+    transition: color 0.3s;
+    &:hover {
+      color: #000;
+    }
   }
 `;
 
@@ -29,17 +37,43 @@ interface IDayPopup {
 }
 
 export function DayPopup(props: IDayPopup) {
+  const [selected, setSelected] = createSignal(
+    activities.map((act) => ({ ...act, selected: false }))
+  );
+
   onMount(() => {
-    window.addEventListener('keydown', handler);
+    window.addEventListener('keydown', handleKeydown);
   });
 
   onCleanup(() => {
-    window.removeEventListener('keydown', handler);
+    window.removeEventListener('keydown', handleKeydown);
   });
 
   // close popup when Escape is pressed
-  function handler(e: KeyboardEvent) {
+  function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape') props.setIsOpen(false);
+  }
+
+  // function handleForm(e: SubmitEvent) {
+  //   e.preventDefault();
+  //   console.log(e);
+  //   // setSelected()
+  // }
+
+  function handleInput(
+    e: Event & {
+      currentTarget: HTMLInputElement;
+      target: HTMLInputElement;
+    }
+  ) {
+    // toggle only the clicked value and update the whole signal array of objects
+    setSelected(
+      selected().map((act) =>
+        act.value !== e.currentTarget.value
+          ? act
+          : { ...act, selected: !act.selected }
+      )
+    );
   }
 
   return (
@@ -47,7 +81,33 @@ export function DayPopup(props: IDayPopup) {
       <h3>
         Editar {props.day} de {props.monthName}
       </h3>
-      <button onClick={() => props.setIsOpen(false)}>close</button>
+      <form>
+        <For each={selected()}>
+          {(obj) => (
+            <label>
+              <input
+                type="checkbox"
+                value={obj.value}
+                checked={obj.selected}
+                onChange={handleInput}
+              />
+              <span>{obj.label}</span>
+            </label>
+          )}
+        </For>
+      </form>
+      <ul>
+        <For each={selected()}>
+          {(obj) => (
+            <Show when={obj.selected}>
+              <li>{obj.label}</li>
+            </Show>
+          )}
+        </For>
+      </ul>
+      <button class="close" onClick={() => props.setIsOpen(false)}>
+        &times;
+      </button>
     </StyledDayPopup>
   );
 }

@@ -10,13 +10,12 @@ const StyledSettingsPopup = styled.aside`
   background: #300;
   padding: 48px;
   width: 70vw;
-  height: 50vh;
+  min-height: 60vh;
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
   color: white;
   p {
     margin-bottom: 24px;
     &.intro {
-      text-align: center;
     }
   }
   ul {
@@ -60,16 +59,21 @@ export function SettingsPopup(props: ISettingsPopup) {
   }
   return (
     <StyledSettingsPopup>
-      <p class="intro">intro text</p>
-      <p>manage activities here:</p>
+      <p class="intro">
+        Esta app te ayuda a llevar un track de qué actividades haces a diario.
+      </p>
+      <p>
+        Selecciona un día del calendario y elige las actividades que has
+        realizado. En la vista general podrás ver los días coloreados según las
+        actividades realizadas.
+      </p>
+      <p>Aquí puedes ver la lista completa de actividades, y crear nuevas:</p>
       <ul>
         <For each={contextActivities}>
           {(obj) => <li style={{ '--color': obj.color }}>{obj.value}</li>}
         </For>
-        <li>
-          <CreateNewActivity />
-        </li>
       </ul>
+      <CreateNewActivity />
       <button
         class="close"
         type="button"

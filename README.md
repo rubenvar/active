@@ -10,5 +10,5 @@ Stores all inputs and preferences **in-browser** with IndexedDB, so all the user
 - [x] Allow to create activities, and store them in browser (`local storage`).
 - [x] Store all the day selections in-browser (`indexedDB`).
 - [x] Show activities in calendar view. Reactive.
-- [ ] Assign colors and other data to each activity
+- [x] Assign colors and other data to each activity
 - [ ] Create a place to update data about each activity.

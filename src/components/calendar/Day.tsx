@@ -1,18 +1,33 @@
 /* eslint-disable solid/reactivity */
 import dayjs from 'dayjs';
-import { For, Show, createResource, createSignal } from 'solid-js';
+import { Show, createResource, createSignal } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { styled } from 'solid-styled-components';
 import { DayPopup } from '$components/DayPopup';
 import { db } from '$src/lib/db';
 import { currentYear } from '$src/config';
+import { useActivities } from '$src/stores/ActivityContext';
 
 interface IStyledDay {
   isToday: boolean;
+  colors: string[] | undefined;
 }
 
 const StyledDay = styled.button<IStyledDay>`
-  background: ${({ isToday }) => (isToday ? '#5002' : '#0002')};
+  /* if array of colors, hard-edged-gradient */
+  /* if one color, show it. else, chekc if today and show default colors */
+  background: ${({ colors, isToday }) =>
+    colors && colors[0]
+      ? colors.length > 1
+        ? `linear-gradient(135deg, ${colors.map((col, i) => {
+            // calculate stos for each color so the gradient is hard-edged
+            const stop = 100 / colors.length;
+            return `${col} ${i * stop}% ${(i + 1) * stop}%`;
+          })})`
+        : colors[0]
+      : isToday
+      ? '#2e262d'
+      : '#23262d'};
   text-align: center;
   padding: 12px;
   margin: 1px;
@@ -36,6 +51,7 @@ interface IDay {
 
 export function Day(props: IDay) {
   const [isOpen, setIsOpen] = createSignal(false);
+  const [activities] = useActivities();
 
   const dateString = `${currentYear}-${props.month + 1}-${props.day}`;
   const [dayData, { refetch }] = createResource(
@@ -53,9 +69,17 @@ export function Day(props: IDay) {
   return (
     <>
       <Show when={props.day !== 0} fallback={<span />}>
-        <StyledDay isToday={isToday} onClick={() => setIsOpen((curr) => !curr)}>
+        <StyledDay
+          isToday={isToday}
+          onClick={() => setIsOpen(true)}
+          colors={dayData()
+            ?.activities?.map(
+              (act) => activities.find((obj) => obj.value === act)?.color
+            )
+            .filter((st): st is string => !!st)}
+        >
           {props.day}
-          <For each={dayData()?.activities}>{(dd) => <p>{dd}</p>}</For>
+          {/* <For each={dayData()?.activities}>{(act) => <p>{act}</p>}</For> */}
         </StyledDay>
       </Show>
       <Show when={isOpen()}>

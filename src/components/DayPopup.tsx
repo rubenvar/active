@@ -16,13 +16,14 @@ import {
 } from './styles/StyledDayPopup';
 import { useActivities } from './stores/ActivityContext';
 import { currentYear } from '$src/config';
-import { db } from './lib/db';
+import { DbDay, db } from './lib/db';
 
 interface IDayPopup {
   monthName: string;
   month: number;
   day: number;
   setIsOpen: Setter<boolean>;
+  refetch: () => DbDay | Promise<DbDay | undefined> | null | undefined;
 }
 
 export function DayPopup(props: IDayPopup) {
@@ -49,30 +50,6 @@ export function DayPopup(props: IDayPopup) {
         setSelected((obj) => obj.activity === act, 'selected', true);
       });
     }
-    // // try to create indexedDB?
-    // const request = indexedDB.open('days');
-    // request.onerror = (event) => {
-    //   // Do something with request.errorCode!
-    //   console.error(event.target);
-    //   console.error(request.error);
-    // };
-    // request.onupgradeneeded = () => {
-    //   const dayData = {
-    //     date: `${currentYear}-${props.month}-${props.day}`,
-    //     activities: selected
-    //       .filter((obj) => obj.selected)
-    //       .map((obj) => obj.activity),
-    //   };
-    //   const db = request.result;
-    //   // https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#creating_and_structuring_the_store
-    //   const objectStore = db.createObjectStore('days', { keyPath: 'date' });
-    //   objectStore.transaction.oncomplete = () => {
-    //     const dayObjectStore = db
-    //       .transaction('days', 'readwrite')
-    //       .objectStore('days');
-    //     dayObjectStore.add(dayData);
-    //   };
-    // };
   });
 
   onCleanup(() => {
@@ -181,7 +158,10 @@ export function DayPopup(props: IDayPopup) {
       <button
         class="close"
         type="button"
-        onClick={() => props.setIsOpen(false)}
+        onClick={() => {
+          props.setIsOpen(false);
+          props.refetch(); // when popup closes, refetch day data from DB for calendar view
+        }}
       >
         &times;
       </button>

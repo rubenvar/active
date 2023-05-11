@@ -3,6 +3,7 @@ import Dexie, { Table } from 'dexie';
 export interface DbDay {
   date: string;
   activities: string[];
+  notes?: string;
 }
 
 export class MySubClassedDexie extends Dexie {

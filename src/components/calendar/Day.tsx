@@ -34,12 +34,24 @@ const StyledDay = styled.button<IStyledDay>`
   border-radius: 1.5px;
   transition: border-color 0.5s;
   border: 1px solid #282c34;
+  position: relative;
+  overflow: hidden;
   &:hover {
     border-color: #800b;
     transition: border-color 0.25s;
   }
   p {
     font-size: 10px;
+  }
+  .hasNotes {
+    height: 14px;
+    width: 14px;
+    background-color: #940c0c;
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    rotate: 45deg;
   }
 `;
 
@@ -79,7 +91,9 @@ export function Day(props: IDay) {
             .filter((st): st is string => !!st)}
         >
           {props.day}
-          {/* <For each={dayData()?.activities}>{(act) => <p>{act}</p>}</For> */}
+          <Show when={!!dayData()?.notes}>
+            <span class="hasNotes" />
+          </Show>
         </StyledDay>
       </Show>
       <Show when={isOpen()}>

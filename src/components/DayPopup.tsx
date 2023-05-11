@@ -50,6 +50,7 @@ export function DayPopup(props: IDayPopup) {
         setSelected((obj) => obj.value === act, 'selected', true);
       });
     }
+    if (dayFromDb?.notes) setNotes(dayFromDb.notes);
   });
 
   onCleanup(() => {
@@ -58,7 +59,10 @@ export function DayPopup(props: IDayPopup) {
   });
   // close popup when Escape is pressed
   function handleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Escape') props.setIsOpen(false);
+    if (e.key === 'Escape') {
+      props.setIsOpen(false);
+      props.refetch(); // when popup closes, refetch day data from DB for calendar view
+    }
   }
 
   function handleInput(
@@ -76,13 +80,13 @@ export function DayPopup(props: IDayPopup) {
   }
 
   createEffect(() => {
-    // try to save (add/update) to db when the "selected" store changes
-    const selectedActivities = selected
-      .filter((obj) => obj.selected)
-      .map((obj) => obj.value);
+    // try to save (add/update) to db when the "selected" or the "notes" stores change
     db.days.put({
       date: `${currentYear}-${props.month + 1}-${props.day}`,
-      activities: selectedActivities,
+      activities: selected
+        .filter((obj) => obj.selected)
+        .map((obj) => obj.value),
+      notes: notes(),
     });
   });
 

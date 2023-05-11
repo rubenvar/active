@@ -5,11 +5,6 @@ export interface DbDay {
   activities: string[];
 }
 
-// export const db = new Dexie('activeDatabase');
-// db.version(1).stores({
-//   days: '++id, activities',
-// })
-
 export class MySubClassedDexie extends Dexie {
   days!: Table<DbDay>;
 

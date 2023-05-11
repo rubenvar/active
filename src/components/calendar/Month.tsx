@@ -16,14 +16,17 @@ interface IStyledMonth {
 }
 
 const StyledMonth = styled.article<IStyledMonth>`
-  margin: 12px 0;
-  padding: 12px;
+  margin: 48px 0;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 24px;
   border-radius: 7px;
   position: relative;
+  @media only screen and (max-width: 850px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
   h3 {
     font-size: 40px;
     color: ${({ isCurrent }) => (isCurrent ? '#800' : '#999')};
@@ -33,12 +36,18 @@ const StyledMonth = styled.article<IStyledMonth>`
     padding: 4px;
     margin: 1px;
     color: #999;
+    @media only screen and (max-width: 1200px) {
+      font-size: 0.7em;
+    }
   }
 `;
 
 const StyledDays = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 130px);
+  @media only screen and (max-width: 1200px) {
+    grid-template-columns: repeat(7, 80px);
+  }
 `;
 
 interface IMonth {

@@ -1,9 +1,10 @@
-import { DayPopup } from '$components/DayPopup';
-import { currentYear } from '$src/config';
 import dayjs from 'dayjs';
-import { Show, createSignal } from 'solid-js';
+import { For, Show, createSignal, onMount } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { styled } from 'solid-styled-components';
+import { DayPopup } from '$components/DayPopup';
+import { db } from '$components/lib/db';
+import { currentYear } from '$src/config';
 
 interface IStyledDay {
   isToday: boolean;
@@ -21,6 +22,9 @@ const StyledDay = styled.button<IStyledDay>`
     border-color: #800b;
     transition: border-color 0.25s;
   }
+  p {
+    font-size: 10px;
+  }
 `;
 
 interface IDay {
@@ -31,6 +35,7 @@ interface IDay {
 
 export function Day(props: IDay) {
   const [isOpen, setIsOpen] = createSignal(false);
+  const [dayData, setDayData] = createSignal<string[]>();
 
   const day = dayjs(
     // eslint-disable-next-line solid/reactivity
@@ -40,11 +45,20 @@ export function Day(props: IDay) {
   );
   const isToday = dayjs().isSame(day, 'day');
 
+  // on mount, get the current activities for this day
+  onMount(async () => {
+    const d = await db.days.get(
+      `${currentYear}-${props.month + 1}-${props.day}`
+    );
+    if (d) setDayData(d.activities);
+  });
+
   return (
     <>
       <Show when={props.day !== 0} fallback={<span />}>
         <StyledDay isToday={isToday} onClick={() => setIsOpen((curr) => !curr)}>
           {props.day}
+          <For each={dayData()}>{(dd) => <p>{dd}</p>}</For>
         </StyledDay>
       </Show>
       <Show when={isOpen()}>

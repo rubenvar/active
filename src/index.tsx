@@ -2,7 +2,7 @@
 import { render } from 'solid-js/web';
 import './index.css';
 import App from './App';
-import { ActivityProvider } from '$components/stores/ActivityContext';
+import { ActivityProvider } from '$src/stores/ActivityContext';
 
 const root = document.getElementById('root');
 

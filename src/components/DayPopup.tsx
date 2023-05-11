@@ -14,9 +14,9 @@ import {
   StyledPopupInputs,
   StyledPopupResults,
 } from './styles/StyledDayPopup';
-import { useActivities } from './stores/ActivityContext';
+import { useActivities } from '$src/stores/ActivityContext';
 import { currentYear } from '$src/config';
-import { DbDay, db } from './lib/db';
+import { DbDay, db } from '$src/lib/db';
 
 interface IDayPopup {
   monthName: string;

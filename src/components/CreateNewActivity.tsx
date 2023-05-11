@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { useActivities } from './stores/ActivityContext';
+import { useActivities } from '$src/stores/ActivityContext';
 import { styled } from 'solid-styled-components';
 
 const StyledNewActivity = styled.div`

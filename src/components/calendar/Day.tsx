@@ -4,7 +4,7 @@ import { For, Show, createResource, createSignal } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { styled } from 'solid-styled-components';
 import { DayPopup } from '$components/DayPopup';
-import { db } from '$components/lib/db';
+import { db } from '$src/lib/db';
 import { currentYear } from '$src/config';
 
 interface IStyledDay {

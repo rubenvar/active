@@ -31,7 +31,7 @@ export function DayPopup(props: IDayPopup) {
   const [contextActivities] = useActivities();
   // create list of available activities to choose from
   const [selected, setSelected] = createStore(
-    contextActivities.map((activity) => ({ activity, selected: false }))
+    contextActivities.map((activity) => ({ ...activity, selected: false }))
   );
   const [notes, setNotes] = createSignal<string>('');
 
@@ -46,7 +46,7 @@ export function DayPopup(props: IDayPopup) {
     );
     if (dayFromDb?.activities) {
       dayFromDb.activities.forEach((act) => {
-        setSelected((obj) => obj.activity === act, 'selected', true);
+        setSelected((obj) => obj.value === act, 'selected', true);
       });
     }
   });
@@ -68,7 +68,7 @@ export function DayPopup(props: IDayPopup) {
   ) {
     // toggle only the clicked value and update the whole signal array of objects
     setSelected(
-      (obj) => obj.activity === e.currentTarget.value,
+      (obj) => obj.value === e.currentTarget.value,
       'selected',
       (sel) => !sel
     );
@@ -78,7 +78,7 @@ export function DayPopup(props: IDayPopup) {
     // try to save (add/update) to db when the "selected" store changes
     const selectedActivities = selected
       .filter((obj) => obj.selected)
-      .map((obj) => obj.activity);
+      .map((obj) => obj.value);
     db.days.put({
       date: `${currentYear}-${props.month + 1}-${props.day}`,
       activities: selectedActivities,
@@ -100,7 +100,7 @@ export function DayPopup(props: IDayPopup) {
               <For each={selected}>
                 {(obj) => (
                   <Show when={obj.selected}>
-                    <li>{obj.activity}</li>
+                    <li>{obj.value}</li>
                   </Show>
                 )}
               </For>
@@ -124,11 +124,11 @@ export function DayPopup(props: IDayPopup) {
                 <label>
                   <input
                     type="checkbox"
-                    value={obj.activity}
+                    value={obj.value}
                     checked={obj.selected}
                     onChange={handleInput}
                   />
-                  <span>{obj.activity}</span>
+                  <span>{obj.value}</span>
                 </label>
               )}
             </For>

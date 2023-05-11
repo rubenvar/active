@@ -16,7 +16,8 @@ const StyledNewActivity = styled.div`
 export function CreateNewActivity() {
   const [showNewActivity, setShowNewActivity] = createSignal(false);
   const [, { add }] = useActivities();
-  const [activity, setActivity] = createSignal<string>('');
+  const [value, setValue] = createSignal<string>('');
+  const [color, setColor] = createSignal<string>('');
 
   return (
     <Show
@@ -30,14 +31,21 @@ export function CreateNewActivity() {
       <StyledNewActivity>
         <input
           name="value"
-          value={activity()}
-          onChange={(e) => setActivity(e.currentTarget.value)}
+          value={value()}
+          onChange={(e) => setValue(e.currentTarget.value)}
+        />
+        <input
+          name="value"
+          type="color"
+          value={color()}
+          onChange={(e) => setColor(e.currentTarget.value)}
         />
         <button
           type="button"
           onClick={() => {
-            add(activity());
-            setActivity('');
+            add({ value: value(), color: color() });
+            setValue('');
+            setColor('');
             setShowNewActivity(false);
           }}
         >

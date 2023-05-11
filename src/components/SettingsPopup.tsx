@@ -1,7 +1,7 @@
-import { useActivities } from '$src/stores/ActivityContext';
 import { For, Setter, onCleanup, onMount } from 'solid-js';
 import { styled } from 'solid-styled-components';
 import { CreateNewActivity } from './CreateNewActivity';
+import { useActivities } from '$src/stores/ActivityContext';
 
 const StyledSettingsPopup = styled.aside`
   position: fixed;
@@ -17,6 +17,11 @@ const StyledSettingsPopup = styled.aside`
     margin-bottom: 24px;
     &.intro {
       text-align: center;
+    }
+  }
+  ul {
+    li {
+      color: var(--color);
     }
   }
   .close {
@@ -58,7 +63,9 @@ export function SettingsPopup(props: ISettingsPopup) {
       <p class="intro">intro text</p>
       <p>manage activities here:</p>
       <ul>
-        <For each={contextActivities}>{(act) => <li>{act}</li>}</For>
+        <For each={contextActivities}>
+          {(obj) => <li style={{ '--color': obj.color }}>{obj.value}</li>}
+        </For>
         <li>
           <CreateNewActivity />
         </li>

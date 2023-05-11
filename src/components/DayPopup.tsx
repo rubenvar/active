@@ -17,6 +17,7 @@ import {
 import { useActivities } from '$src/stores/ActivityContext';
 import { currentYear } from '$src/config';
 import { DbDay, db } from '$src/lib/db';
+import { ActivityCheckbox } from './ActivityCheckbox';
 
 interface IDayPopup {
   monthName: string;
@@ -96,21 +97,24 @@ export function DayPopup(props: IDayPopup) {
             when={selected.some((obj) => obj.selected === true)}
             fallback={<p class="fallback">Sin actividades</p>}
           >
-            <ul>
+            <p class="activities">
               <For each={selected}>
                 {(obj) => (
                   <Show when={obj.selected}>
-                    <li>{obj.value}</li>
+                    <span>
+                      <span style={{ '--color': obj.color }} class="dot" />
+                      {obj.value}
+                    </span>
                   </Show>
                 )}
               </For>
-            </ul>
+            </p>
           </Show>
           <Show
             when={notes() && notes() !== ''}
             fallback={<p class="fallback">Sin notas</p>}
           >
-            <p>{notes()}</p>
+            <p class="notes">{notes()}</p>
           </Show>
         </StyledPopupResults>
         <StyledPopupInputs>
@@ -121,15 +125,12 @@ export function DayPopup(props: IDayPopup) {
           <form>
             <For each={selected}>
               {(obj) => (
-                <label>
-                  <input
-                    type="checkbox"
-                    value={obj.value}
-                    checked={obj.selected}
-                    onChange={handleInput}
-                  />
-                  <span>{obj.value}</span>
-                </label>
+                <ActivityCheckbox
+                  value={obj.value}
+                  color={obj.color}
+                  selected={obj.selected}
+                  handleInput={handleInput}
+                />
               )}
             </For>
             <CreateNewActivity />

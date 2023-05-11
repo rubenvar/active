@@ -36,9 +36,28 @@ export const StyledDayPopup = styled.div`
 `;
 
 export const StyledPopupResults = styled.div`
+  p {
+    margin-bottom: 36px;
+  }
   .fallback {
     color: grey;
-    margin-bottom: 36px;
+  }
+  .activities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    .dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      vertical-align: middle;
+      background-color: var(--color);
+      margin-right: 6px;
+    }
+  }
+  .notes {
+    white-space: pre;
   }
 `;
 

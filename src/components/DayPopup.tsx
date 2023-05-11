@@ -1,4 +1,12 @@
-import { For, Setter, createSignal, onCleanup, onMount, Show } from 'solid-js';
+import {
+  For,
+  Setter,
+  createSignal,
+  onCleanup,
+  onMount,
+  Show,
+  createEffect,
+} from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { CreateNewActivity } from './CreateNewActivity';
 import {
@@ -7,6 +15,8 @@ import {
   StyledPopupResults,
 } from './styles/StyledDayPopup';
 import { useActivities } from './stores/ActivityContext';
+import { currentYear } from '$src/config';
+import { db } from './lib/db';
 
 interface IDayPopup {
   monthName: string;
@@ -25,13 +35,51 @@ export function DayPopup(props: IDayPopup) {
   const [notes, setNotes] = createSignal<string>('');
   const [showNewActivity, setShowNewActivity] = createSignal(false);
 
-  // close popup when Escape is pressed
-  onMount(() => {
+  onMount(async () => {
+    // add event listener for keydown handler
     window.addEventListener('keydown', handleKeydown);
+
+    // on mount, try to get activities for this day from indexedDB
+    // if there are, populate the selected array so they are marked in the popup
+    const dayFromDb = await db.days.get(
+      `${currentYear}-${props.month + 1}-${props.day}`
+    );
+    if (dayFromDb?.activities) {
+      dayFromDb.activities.forEach((act) => {
+        setSelected((obj) => obj.activity === act, 'selected', true);
+      });
+    }
+    // // try to create indexedDB?
+    // const request = indexedDB.open('days');
+    // request.onerror = (event) => {
+    //   // Do something with request.errorCode!
+    //   console.error(event.target);
+    //   console.error(request.error);
+    // };
+    // request.onupgradeneeded = () => {
+    //   const dayData = {
+    //     date: `${currentYear}-${props.month}-${props.day}`,
+    //     activities: selected
+    //       .filter((obj) => obj.selected)
+    //       .map((obj) => obj.activity),
+    //   };
+    //   const db = request.result;
+    //   // https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#creating_and_structuring_the_store
+    //   const objectStore = db.createObjectStore('days', { keyPath: 'date' });
+    //   objectStore.transaction.oncomplete = () => {
+    //     const dayObjectStore = db
+    //       .transaction('days', 'readwrite')
+    //       .objectStore('days');
+    //     dayObjectStore.add(dayData);
+    //   };
+    // };
   });
+
   onCleanup(() => {
+    // remove event listener for keydown handler
     window.removeEventListener('keydown', handleKeydown);
   });
+  // close popup when Escape is pressed
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape') props.setIsOpen(false);
   }
@@ -49,6 +97,17 @@ export function DayPopup(props: IDayPopup) {
       (sel) => !sel
     );
   }
+
+  createEffect(() => {
+    // try to save (add/update) to db when the "selected" store changes
+    const selectedActivities = selected
+      .filter((obj) => obj.selected)
+      .map((obj) => obj.activity);
+    db.days.put({
+      date: `${currentYear}-${props.month + 1}-${props.day}`,
+      activities: selectedActivities,
+    });
+  });
 
   return (
     <StyledDayPopup>

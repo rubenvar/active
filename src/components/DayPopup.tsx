@@ -34,7 +34,6 @@ export function DayPopup(props: IDayPopup) {
     contextActivities.map((activity) => ({ activity, selected: false }))
   );
   const [notes, setNotes] = createSignal<string>('');
-  const [showNewActivity, setShowNewActivity] = createSignal(false);
 
   onMount(async () => {
     // add event listener for keydown handler
@@ -133,20 +132,7 @@ export function DayPopup(props: IDayPopup) {
                 </label>
               )}
             </For>
-            <Show
-              when={showNewActivity()}
-              fallback={
-                <button type="button" onClick={() => setShowNewActivity(true)}>
-                  nueva actividad
-                </button>
-              }
-            >
-              <CreateNewActivity
-                close={() => {
-                  setShowNewActivity(false);
-                }}
-              />
-            </Show>
+            <CreateNewActivity />
           </form>
           <textarea
             placeholder="notas del día"

@@ -11,4 +11,4 @@ Stores all inputs and preferences **in-browser** with IndexedDB, so all the user
 - [x] Store all the day selections in-browser (`indexedDB`).
 - [x] Show activities in calendar view. Reactive.
 - [x] Assign colors and other data to each activity
-- [ ] Create a place to update data about each activity (CRUD).
+- [x] Create a place to update color for each activity + delete activity (CRUD).

@@ -20,6 +20,11 @@ const StyledEditActivity = styled.li<IStyledEditActivity>`
       background: ${({ color }) => color};
     }
     &.cancel {
+      border: 1px solid ${({ color }) => color};
+      color: #000;
+      background: none;
+    }
+    &.remove {
       color: #000;
       background: none;
     }
@@ -28,7 +33,7 @@ const StyledEditActivity = styled.li<IStyledEditActivity>`
   label {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 18px;
   }
 `;
 
@@ -37,13 +42,12 @@ interface IEditActivity {
 }
 
 export function EditActivity(props: IEditActivity) {
-  const [, { update }] = useActivities();
+  const [, { update, remove }] = useActivities();
   const [showEditActivity, setShowEditActivity] = createSignal(false);
-  const [value, setValue] = createSignal('');
   const [color, setColor] = createSignal('');
+  const [removeCount, setRemoveCount] = createSignal(0);
 
   onMount(() => {
-    setValue(props.activity.value);
     setColor(props.activity.color);
   });
 
@@ -74,8 +78,7 @@ export function EditActivity(props: IEditActivity) {
               class="save"
               type="button"
               onClick={() => {
-                update({ value: value(), color: color() });
-                setValue('');
+                update({ value: props.activity.value, color: color() });
                 setColor('');
                 setShowEditActivity(false);
               }}
@@ -86,12 +89,22 @@ export function EditActivity(props: IEditActivity) {
               class="cancel"
               type="button"
               onClick={() => {
-                setValue('');
                 setColor('');
                 setShowEditActivity(false);
               }}
             >
               Cancelar
+            </button>
+            <button
+              class="remove"
+              type="button"
+              onClick={() => {
+                // count to three before removing
+                setRemoveCount((curr) => curr + 1);
+                if (removeCount() > 3) remove(props.activity.value);
+              }}
+            >
+              Eliminar ({removeCount()})
             </button>
           </div>
         </div>

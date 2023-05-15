@@ -10,12 +10,13 @@ type ActivityContextValue = [
   actions: {
     add: (activity: Activity) => void;
     update: (activity: Activity) => void;
+    remove: (value: Activity['value']) => void;
   }
 ];
 
 const ActivityContext = createContext<ActivityContextValue>([
   defaultActivities,
-  { add: () => undefined, update: () => undefined },
+  { add: () => undefined, update: () => undefined, remove: () => undefined },
 ]);
 
 export const ActivityProvider: ParentComponent<{
@@ -45,10 +46,16 @@ export const ActivityProvider: ParentComponent<{
       );
     }
   };
+  // function that removes activity
+  const remove = (value: Activity['value']) => {
+    if (activities.find((obj) => obj.value === value)) {
+      setActivities((curr) => curr.filter((obj) => obj.value !== value));
+    }
+  };
 
   // return the provider wrapper
   return (
-    <ActivityContext.Provider value={[activities, { add, update }]}>
+    <ActivityContext.Provider value={[activities, { add, update, remove }]}>
       {props.children}
     </ActivityContext.Provider>
   );

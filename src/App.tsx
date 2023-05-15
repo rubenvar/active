@@ -26,6 +26,13 @@ const StyledMain = styled.div`
       padding-right: 12px;
     }
   }
+  footer {
+    font-size: 14px;
+    padding: 48px 0 18px;
+    a {
+      color: inherit;
+    }
+  }
 `;
 
 const App: Component = () => {
@@ -40,6 +47,15 @@ const App: Component = () => {
       <main>
         <Calendar />
       </main>
+      <footer>
+        <p>
+          Creado por{' '}
+          <a href="https://rubenvara.io" target="_blank">
+            RV 🚀
+          </a>{' '}
+          con SolidJS
+        </p>
+      </footer>
       <GithubCorner />
     </StyledMain>
   );

@@ -48,6 +48,9 @@ const StyledDays = styled.div`
   @media only screen and (max-width: 1200px) {
     grid-template-columns: repeat(7, 80px);
   }
+  @media only screen and (max-width: 580px) {
+    grid-template-columns: repeat(7, 1fr);
+  }
 `;
 
 interface IMonth {

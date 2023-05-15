@@ -20,6 +20,12 @@ const StyledMain = styled.div`
       display: inline-block;
     }
   }
+  main {
+    @media only screen and (max-width: 580px) {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
 `;
 
 const App: Component = () => {

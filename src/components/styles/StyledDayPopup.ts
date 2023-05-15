@@ -6,8 +6,8 @@ export const StyledDayPopup = styled.div`
   left: 5vw;
   background: #300;
   padding: 48px;
-  width: calc(90vw);
-  height: calc(90vh);
+  width: 90vw;
+  height: 90vh;
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
   color: white;
   h3 {
@@ -18,6 +18,9 @@ export const StyledDayPopup = styled.div`
   .inner {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    /* popup height - paddings - h1 height */
+    height: calc(90vh - 48px * 2 - 77px);
     width: 75%;
     margin: 0 auto;
     gap: 40px;
@@ -62,7 +65,7 @@ export const StyledPopupResults = styled.div`
 `;
 
 export const StyledPopupInputs = styled.div`
-  border: 1px solid grey;
+  border: 1px solid #999;
   border-radius: 12px;
   padding: 24px;
   .intro {
@@ -78,5 +81,6 @@ export const StyledPopupInputs = styled.div`
   textarea {
     width: 100%;
     padding: 12px;
+    background: #ddd;
   }
 `;

@@ -5,7 +5,7 @@ import { styled } from 'solid-styled-components';
 const StyledNewActivity = styled.div`
   display: flex;
   gap: 12px;
-  border: 1px solid #999;
+  border: 1px solid #553333;
   padding: 12px;
   border-radius: 6px;
   div {

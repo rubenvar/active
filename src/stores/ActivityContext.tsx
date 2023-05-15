@@ -1,11 +1,6 @@
 import { createContext, useContext, ParentComponent } from 'solid-js';
-import { activities as defaultActivities } from '$src/config';
+import { Activity, activities as defaultActivities } from '$src/config';
 import { createLocalStore } from './localStorage';
-
-export type Activity = {
-  value: string;
-  color: string; // hex
-};
 
 type ActivityContextState = Activity[];
 

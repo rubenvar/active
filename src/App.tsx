@@ -4,14 +4,14 @@ import { Calendar } from '$components/calendar/Calendar';
 import { SettingsButton } from '$components/SettingsButton';
 import { GithubCorner } from '$components/GithubCorner';
 
-const StyledMain = styled.div`
+const StyledPage = styled.div`
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(8px + 2vmin);
   color: white;
   h1 {
     margin-bottom: 12px;
@@ -37,7 +37,7 @@ const StyledMain = styled.div`
 
 const App: Component = () => {
   return (
-    <StyledMain>
+    <StyledPage>
       <header>
         <h1>
           <span>🏃‍♂️</span> active
@@ -57,7 +57,7 @@ const App: Component = () => {
         </p>
       </footer>
       <GithubCorner />
-    </StyledMain>
+    </StyledPage>
   );
 };
 

@@ -16,16 +16,16 @@ const StyledEditActivity = styled.li<IStyledEditActivity>`
   button {
     padding: 3px 16px;
     &.save {
-      color: #000;
+      color: #fff;
       background: ${({ color }) => color};
     }
     &.cancel {
       border: 1px solid ${({ color }) => color};
-      color: #000;
+      color: #fff;
       background: none;
     }
     &.remove {
-      color: #000;
+      color: #fff;
       background: none;
     }
   }

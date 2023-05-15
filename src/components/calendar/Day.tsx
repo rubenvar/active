@@ -28,30 +28,47 @@ const StyledDay = styled.button<IStyledDay>`
       : isToday
       ? '#2e262d'
       : '#23262d'};
-  text-align: center;
   padding: 12px;
+  padding-left: 18px;
   margin: 1px;
   border-radius: 1.5px;
   transition: border-color 0.5s;
   border: 1px solid #282c34;
   position: relative;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: start;
+  justify-items: start;
+  gap: 8px;
   &:hover {
     border-color: #800b;
     transition: border-color 0.25s;
   }
-  p {
-    font-size: 10px;
+  .day {
+    margin: 0;
+    font-family: monospace;
+    text-align: right;
+    font-size: 18px;
+    justify-self: end;
+  }
+  .notes {
+    justify-self: end;
+    font-size: 9px;
+    line-height: 1;
+    display: block;
+    text-align: right;
+    color: #fffd;
   }
   .hasNotes {
-    height: 14px;
-    width: 14px;
     background-color: #940c0c;
     display: block;
     position: absolute;
-    top: -7px;
-    right: -7px;
+    top: -5px;
+    right: -5px;
     rotate: 45deg;
+    width: 10px;
+    height: 10px;
   }
 `;
 
@@ -90,9 +107,14 @@ export function Day(props: IDay) {
             )
             .filter((st): st is string => !!st)}
         >
-          {props.day}
+          <span class="day">{props.day}</span>
           <Show when={!!dayData()?.notes}>
-            <span class="hasNotes" />
+            <Show
+              when={dayData()?.notes?.length < 30}
+              fallback={<span class="hasNotes" />}
+            >
+              <span class="notes">{dayData()?.notes}</span>
+            </Show>
           </Show>
         </StyledDay>
       </Show>

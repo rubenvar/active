@@ -110,7 +110,7 @@ export function Day(props: IDay) {
           <span class="day">{props.day}</span>
           <Show when={!!dayData()?.notes}>
             <Show
-              when={dayData()?.notes?.length < 30}
+              when={dayData()?.notes?.length < 26}
               fallback={<span class="hasNotes" />}
             >
               <span class="notes">{dayData()?.notes}</span>

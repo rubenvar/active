@@ -2,6 +2,7 @@ import type { Component } from 'solid-js';
 import { styled } from 'solid-styled-components';
 import { Calendar } from '$components/calendar/Calendar';
 import { SettingsButton } from '$components/SettingsButton';
+import { GithubCorner } from '$components/GithubCorner';
 
 const StyledMain = styled.div`
   background-color: #282c34;
@@ -33,6 +34,7 @@ const App: Component = () => {
       <main>
         <Calendar />
       </main>
+      <GithubCorner />
     </StyledMain>
   );
 };

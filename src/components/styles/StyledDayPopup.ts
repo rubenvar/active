@@ -48,8 +48,8 @@ export const StyledPopupResults = styled.div`
     gap: 20px;
     .dot {
       display: inline-block;
-      width: 7px;
-      height: 7px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       vertical-align: middle;
       background-color: var(--color);

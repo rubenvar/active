@@ -2,6 +2,7 @@ import { For, Setter, onCleanup, onMount } from 'solid-js';
 import { styled } from 'solid-styled-components';
 import { CreateNewActivity } from './CreateNewActivity';
 import { useActivities } from '$src/stores/ActivityContext';
+import { EditActivity } from './EditActivity';
 
 const StyledSettingsPopup = styled.aside`
   position: fixed;
@@ -16,11 +17,6 @@ const StyledSettingsPopup = styled.aside`
   p {
     margin-bottom: 24px;
     &.intro {
-    }
-  }
-  ul {
-    li {
-      color: var(--color);
     }
   }
   .close {
@@ -70,7 +66,7 @@ export function SettingsPopup(props: ISettingsPopup) {
       <p>Aquí puedes ver la lista completa de actividades, y crear nuevas:</p>
       <ul>
         <For each={contextActivities}>
-          {(obj) => <li style={{ '--color': obj.color }}>{obj.value}</li>}
+          {(obj) => <EditActivity activity={obj} />}
         </For>
       </ul>
       <CreateNewActivity />
